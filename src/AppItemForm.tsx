@@ -1,10 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Button, TextField} from "@mui/material";
 
 export type EdiTableSpanType = {
-    callback:(title:string)=>void
+    callback: (title: string) => void
 
 }
-const AppItemForm = (props:EdiTableSpanType) => {
+const AppItemForm = (props: EdiTableSpanType) => {
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 
@@ -16,7 +17,7 @@ const AppItemForm = (props:EdiTableSpanType) => {
         setError('')
         if (e.key === 'Enter') {
             if (title.trim() !== '') {
-                props.callback( title.trim())
+                props.callback(title.trim())
                 setTitle('')
             } else {
                 setError('Title is required!')
@@ -25,7 +26,7 @@ const AppItemForm = (props:EdiTableSpanType) => {
     }
     const addTaskNewTaskTitle = () => {
         if (title.trim() !== '') {
-            props.callback( title.trim())
+            props.callback(title.trim())
             setTitle('')
         } else {
             setError('Title is required!')
@@ -34,13 +35,21 @@ const AppItemForm = (props:EdiTableSpanType) => {
 
     return (
         <div>
-            <input value={title}
-                   onChange={OnChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   className={error ? 'error' : ''}
+
+            <TextField
+                error={!!error}
+                id="outlined-basic"
+                label={title}
+                variant="outlined"
+                value={title}
+                onChange={OnChangeHandler}
+                onKeyPress={onKeyPressHandler}
+                helperText={error}
+                size={'small'}
             />
-            <button onClick={addTaskNewTaskTitle}>+</button>
-            {error && <div className={'error-message'}>Title is required!</div>}
+            {/*    <button onClick={addTaskNewTaskTitle}>+</button>*/}
+            <Button variant="contained" onClick={addTaskNewTaskTitle}
+                    style={{maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px'}}>+</Button>
         </div>
     );
 };

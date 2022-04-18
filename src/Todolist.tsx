@@ -1,6 +1,6 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import React from "react";
 import {FilterValuesType} from "./App";
-import EditableSpan, {EditableSpanType} from "./EditableSpan";
+import EditableSpan from "./EditableSpan";
 import AppItemForm from "./AppItemForm";
 import {Button, Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";

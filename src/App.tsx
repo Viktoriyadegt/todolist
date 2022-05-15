@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {TasksType, Todolist} from "./Todolist";
 import {v1} from "uuid";
-import AppItemForm from "./AppItemForm";
+import AddItemForm from "./AddItemForm";
 import ButtonAppBar from "./Compenents/ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
 
@@ -84,7 +84,7 @@ function App() {
             <ButtonAppBar/>
             <Container fixed>
                 <Grid container style={{padding: '20px'}}>
-                    <AppItemForm callback={AddTodolistTitle}/>
+                    <AddItemForm callback={AddTodolistTitle}/>
                 </Grid>
                 <Grid container spacing={3}>
                     {todolists.map(m => {

@@ -1,11 +1,12 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {Button, TextField} from "@mui/material";
 
 export type EdiTableSpanType = {
     callback: (title: string) => void
 
 }
-const AppItemForm = (props: EdiTableSpanType) => {
+const AddItemForm = React.memo((props: EdiTableSpanType) => {
+
     const [title, setTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
 
@@ -14,7 +15,8 @@ const AppItemForm = (props: EdiTableSpanType) => {
     }
 
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError('')
+        if(error !== null)
+        setError(null)
         if (e.key === 'Enter') {
             if (title.trim() !== '') {
                 props.callback(title.trim())
@@ -24,7 +26,7 @@ const AppItemForm = (props: EdiTableSpanType) => {
             }
         }
     }
-    const addTaskNewTaskTitle = () => {
+    const addTaskNewTaskTitle =() => {
         if (title.trim() !== '') {
             props.callback(title.trim())
             setTitle('')
@@ -52,6 +54,6 @@ const AppItemForm = (props: EdiTableSpanType) => {
                     style={{maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px'}}>+</Button>
         </div>
     );
-};
+});
 
-export default AppItemForm;
+export default AddItemForm;

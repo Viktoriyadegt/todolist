@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import {AddItemForm} from "../AddItemForm";
 import {action} from "@storybook/addon-actions";
 import {Task} from "../Task";
-import {TaskType} from "../Todolist";
+import {TaskPriorities, TaskStatuses} from "../API/ todolist-api";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -24,13 +24,15 @@ export const TaskIsNoteDoneExample = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TaskIsNoteDoneExample.args = {
   todolistId: 'todolist1',
-  task: {id:'1', title:'js', isDone: false}
+  task: {id:'1', title:'js',status: TaskStatuses.New, todoListId: "todolistId1", description: '',
+    startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low }
 };
 
 export const TaskIsDoneExample = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TaskIsDoneExample.args = {
   todolistId: 'todolist1',
-  task: {id:'1', title:'js', isDone: true}
+  task: {id:'1', title:'js', status: TaskStatuses.Completed, todoListId: "todolistId1", description: '',
+    startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low }
 };
 

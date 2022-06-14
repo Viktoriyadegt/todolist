@@ -1,4 +1,4 @@
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducer';
+import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, setTaskAC, tasksReducer} from './tasks-reducer';
 import {TasksStateType} from '../App';
 import {addTodolistAC, removeTodolistAC} from './todolists-reducer';
 import {TaskPriorities, TaskStatuses} from "../API/ todolist-api";
@@ -7,7 +7,7 @@ let startState: TasksStateType = {};
 beforeEach(() => {
     startState = {
         "todolistId1": [
-            { id: "1", title: "CSS", status: TaskStatuses.New, todoListId: "todolistId1", description: '',
+            { id: "1", title: "CSS", status: TaskStatuses.Completed, todoListId: "todolistId1", description: '',
                 startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low },
             { id: "2", title: "JS", status: TaskStatuses.Completed, todoListId: "todolistId1", description: '',
                 startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low },
@@ -15,7 +15,7 @@ beforeEach(() => {
                 startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low }
         ],
         "todolistId2": [
-            { id: "1", title: "bread", status: TaskStatuses.New, todoListId: "todolistId1", description: '',
+            { id: "1", title: "bread", status: TaskStatuses.Completed, todoListId: "todolistId1", description: '',
                 startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low },
             { id: "2", title: "milk",status: TaskStatuses.Completed, todoListId: "todolistId1", description: '',
                 startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low },
@@ -35,7 +35,19 @@ test('correct task should be deleted from correct array', () => {
     expect(endState["todolistId2"].every(t => t.id != "2")).toBeTruthy();
 });
 test('correct task should be added to correct array', () => {
-    const action = addTaskAC("juce", "todolistId2");
+    //const action = addTaskAC("juce", "todolistId2");
+    const action = addTaskAC({
+        id:'id exist',
+        status: TaskStatuses.New,
+        todoListId: "todolistId2",
+        title: 'juce',
+        order: 0,
+        priority: 0,
+        deadline: '',
+        startDate: '',
+        addedDate: '',
+        description: ''
+    });
 
     const endState = tasksReducer(startState, action)
 
@@ -43,15 +55,15 @@ test('correct task should be added to correct array', () => {
     expect(endState["todolistId2"].length).toBe(4);
     expect(endState["todolistId2"][0].id).toBeDefined();
     expect(endState["todolistId2"][0].title).toBe("juce");
-    expect(endState["todolistId2"][0].status).toBe(false);
+    expect(endState["todolistId2"][0].status).toBe(0);
 });
 test('status of specified task should be changed', () => {
-    const action = changeTaskStatusAC("2", false, "todolistId2");
+    const action = changeTaskStatusAC("2", TaskStatuses.New, "todolistId2");
 
-    const endState = tasksReducer(startState, action)
+    const endState = tasksReducer(  startState, action)
 
-    expect(endState["todolistId1"][1].status).toBe(true);
-    expect(endState["todolistId2"][1].status).toBe(false);
+    expect(endState["todolistId1"][1].status).toBe(2);
+    expect(endState["todolistId2"][1].status).toBe(0);
 });
 test('title of specified task should be changed', () => {
     const action = changeTaskTitleAC("2", "yogurt", "todolistId2");
@@ -87,3 +99,21 @@ test('propertry with todolistId should be deleted', () => {
     expect(keys.length).toBe(1);
     expect(endState["todolistId2"]).not.toBeDefined();
 });
+
+test('tasks should be added for todolist', () => {
+
+    const action = setTaskAC(startState['todolistId1'],"todolistId1");
+
+    const endState = tasksReducer({
+        'todolistId2': [],
+        'todolistId1': []
+        }, action)
+
+    expect(endState["todolistId2"].length).toBe(0);
+    expect(endState["todolistId1"].length).toBe(3);
+});
+
+
+
+
+

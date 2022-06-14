@@ -45,10 +45,9 @@ export type ResponseType<D = {}> = {
     data: D
 }
 
-export type  UpdateTaskType = {
+export type  UpdateTaskModelType = {
     title: string
     description: string
-    completed: boolean
     status: TaskStatuses
     priority: TaskPriorities
     startDate: string
@@ -107,14 +106,14 @@ export const todolistAPI = {
     },
 
     createTask(todolistId:string,title: string) {
-        return instance.post<CreateTaskType>(`todo-lists/${todolistId}/tasks`, {title:title}
+        return instance.post<ResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title:title}
         )
     },
-    updateTask(todolistId: string, taskId: string, title:string) {
-        return instance.put<UpdateTaskType>(`todo-lists/${todolistId}/tasks/${taskId}`, {title: title}
+    updateTask(todolistId: string, taskId: string, model:UpdateTaskModelType) {
+        return instance.put<UpdateTaskModelType>(`todo-lists/${todolistId}/tasks/${taskId}`, {model}
         )
     },
-    deleteTask(todolistId: string, taskId: string) {
+    deleteTask(taskId: string,todolistId: string ) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
 

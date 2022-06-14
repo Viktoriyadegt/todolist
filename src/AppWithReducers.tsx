@@ -51,7 +51,18 @@ function AppWithReducers() {
     }
 
     function addTask(title: string, todolistId: string) {
-        const action = addTaskAC(title, todolistId);
+        const action = addTaskAC({
+            id:'id exist',
+            status: TaskStatuses.New,
+            todoListId: todolistId,
+            title: title,
+            order: 0,
+            priority: 0,
+            deadline: '',
+            startDate: '',
+            addedDate: '',
+            description: ''
+        } );
         dispatchToTasks(action);
     }
 
@@ -82,7 +93,12 @@ function AppWithReducers() {
     }
 
     function addTodolist(title: string) {
-        const action = addTodolistAC(title);
+        const action = addTodolistAC({
+            id: v1(),
+            title: title,
+            order: 0,
+            addedDate: ''
+        });
         dispatchToTasks(action);
         dispatchToTodolists(action);
     }

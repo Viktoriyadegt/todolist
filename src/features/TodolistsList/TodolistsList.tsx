@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppRootStateType } from '../../app/store'
+import {AppRootStateType, useAppSelector} from '../../app/store'
 import {
     addTodolistTC,
     changeTodolistFilterAC,
@@ -14,20 +14,24 @@ import { addTaskTC, removeTaskTC, TasksStateType, updateTaskTC } from './tasks-r
 import { TaskStatuses } from '../../api/todolists-api'
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
 import { Todolist } from './Todolist/Todolist'
+import {Navigate} from 'react-router-dom'
 
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
 export const TodolistsList: React.FC = () => {
 
-    const todolists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todolists)
+    const todolists = useAppSelector(state => state.todolists)
+    const isLoggedIn = useAppSelector(state => state.login.isLoggedIn)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const thunk = fetchTodolistsTC()
-        dispatch(thunk)
+        if(!isLoggedIn){
+            return
+        }
+        dispatch(fetchTodolistsTC())
     }, [])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
@@ -69,6 +73,10 @@ export const TodolistsList: React.FC = () => {
         const thunk = addTodolistTC(title)
         dispatch(thunk)
     }, [dispatch])
+
+    if(!isLoggedIn){
+        return <Navigate to={'/login'}/>
+    }
 
 
     return <>

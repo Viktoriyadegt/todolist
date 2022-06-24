@@ -14,7 +14,8 @@ export const todolistsAPI = {
         return instance.get<TodolistType[]>('todo-lists');
     },
     createTodolist(title: string) {
-        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>('todo-lists', {title});
+        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TodolistType }>>>
+        ('todo-lists', {title});
     },
     deleteTodolist(id: string) {
         return instance.delete<ResponseType>(`todo-lists/${id}`);
@@ -29,14 +30,38 @@ export const todolistsAPI = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
     },
     createTask(todolistId: string, title: string) {
-        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks`, {title});
+        return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TaskType }>>>
+        (`todo-lists/${todolistId}/tasks`, {title});
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
-        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>
+        (`todo-lists/${todolistId}/tasks/${taskId}`, model);
+    }
+}
+
+
+
+export const authAPI = {
+    login(data: LoginParamsType) {
+        return instance.post< LoginParamsType , AxiosResponse<ResponseType<{ userId: string }>>>
+        ( 'auth/login', data);
+    },
+    me() {
+        return instance.get<AuthMeType, AxiosResponse<ResponseType<AuthMeType>>>('auth/me');
+    },
+    logout(){
+        return instance.delete<ResponseType>('auth/login')
     }
 }
 
 // types
+
+export type AuthMeType = {
+        id: number,
+        email: string,
+        login: string
+}
+
 export type TodolistType = {
     id: string
     title: string
@@ -90,4 +115,11 @@ type GetTasksResponse = {
     error: string | null
     totalCount: number
     items: TaskType[]
+}
+
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
 }
